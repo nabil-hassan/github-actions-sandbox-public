@@ -8,18 +8,26 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to deploy to'
+        description: 'Lower environment to deploy to'
         type: 'choice'
         required: true
         default: 'staging'
         options:
           - 'staging'
-          - 'production'
+          - 'dev'
 
 jobs:
-  echo-welcome:
+  deploy-lower-environment:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
     steps:
-      - name: Echo welcome message
+      - name: deploy-lower
         run: echo "Welcome to the deployment environments workflow. The environment variable is:" ${{ env.MY_ENV_VAR }}
+
+  deploy-production:
+    needs: deploy-lower-environment
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+        - name: deploy-prod
+          run: echo "Welcome to the deployment environments workflow. The environment variable is:" ${{ env.MY_ENV_VAR }}
