@@ -19,6 +19,7 @@ on:
 jobs:
   echo-welcome:
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     steps:
       - name: Echo welcome message
         run: echo "Welcome to the deployment environments workflow. The environment variable is:" ${{ env.MY_ENV_VAR }}
