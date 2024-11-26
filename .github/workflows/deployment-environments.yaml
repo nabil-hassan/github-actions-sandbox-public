@@ -1,8 +1,6 @@
 # Used to illustrate deployment environments
 name: Deployment environments workflow
 run-name: Deploy to ${{ github.event.inputs.environment }}
-env:
-  MY_ENV_VAR: "default" # this can be overriden by defining a variable within the GitHub environments section
 
 on:
   workflow_dispatch:
@@ -22,7 +20,7 @@ jobs:
     environment: ${{ github.event.inputs.environment }}
     steps:
       - name: deploy-lower
-        run: echo "Welcome to the deployment environments workflow. The environment variable is:" ${{ env.MY_ENV_VAR }}
+        run: echo "Welcome to the deployment environments workflow. The environment variable is:" ${{ vars.MY_ENV_VAR || 'DEFAULT' }}
 
   deploy-production:
     needs: deploy-lower-environment
@@ -30,4 +28,4 @@ jobs:
     environment: production
     steps:
         - name: deploy-prod
-          run: echo "Welcome to the deployment environments workflow. The environment variable is:" ${{ env.MY_ENV_VAR }}
+          run: echo "Welcome to the deployment environments workflow. The environment variable is:" ${{ vars.MY_ENV_VAR || 'DEFAULT' }}
